@@ -1,11 +1,11 @@
 from django.db import models
 
 
-class CommonNotice(models.Model):
+class EltecNotice(models.Model):
     boardId = models.IntegerField()
     num = models.IntegerField()
-    category = models.CharField(max_length=5)
     title = models.CharField(max_length=100)
+    category = models.CharField(max_length=5, null=True)
     date = models.DateField(auto_now_add=False)
     link = models.CharField(max_length=300)
 
