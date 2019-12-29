@@ -1,7 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, messaging
 from notice.models import Board, Notice
-from django.core import serializers
 
 
 def send_push():
@@ -10,16 +9,18 @@ def send_push():
 
     for i in range(len(Board.BOARD_CATEGORY_CHOICE)):
         topic = Board.BOARD_CATEGORY_CHOICE[i][1]
-        # new_notices = Notice.objects.filter(board_category=i, push=False)
-        new_notices = Notice.objects.filter(board_category=i)
+        new_notices = Notice.objects.filter(board_category=i, push=False)
         if len(new_notices) == 0:
             continue
 
+        data = {}
+        for j in range(len(new_notices)):
+            notice = new_notices[j]
+            data[str(j)] = str(notice.board_id) + '&' + notice.title
+
         message = messaging.Message(
-            data={
-                'data': serializers.serialize('json', new_notices)
-            },
-            topic=topic,
+            data=data,
+            topic=topic
         )
 
         response = messaging.send(message)

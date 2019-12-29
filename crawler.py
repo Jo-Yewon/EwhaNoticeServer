@@ -37,7 +37,7 @@ def get_notice():
         # 1. get data from url
         notices = get_notices_data(board.base_url + board.next_url)
         latest_index, latest_num = get_first_notice(notices)
-        if latest_index == -1 or latest_index <= board.saved_latest:
+        if latest_index == -1 or latest_num <= board.saved_latest:
             continue
 
         # 2. save new notices
@@ -86,5 +86,5 @@ def get_notice():
 
 
 if __name__ == '__main__':
-    # get_notice()
+    get_notice()
     send_push()

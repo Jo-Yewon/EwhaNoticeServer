@@ -36,7 +36,6 @@ class Board(models.Model):
 class Notice(models.Model):
     board_category = models.IntegerField(choices=Board.BOARD_CATEGORY_CHOICE, db_index=True)
     board_id = models.IntegerField()
-
     num = models.IntegerField()
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=5, null=True)
