@@ -1,4 +1,3 @@
-# Default ignored files
 /.idea
 /venv
 *.pyc
@@ -8,3 +7,4 @@ db.sqlite3
 /static
 .DS_Store
 setting.py
+.json

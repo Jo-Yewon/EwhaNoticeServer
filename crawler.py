@@ -10,6 +10,7 @@ import django
 django.setup()
 
 from notice.models import Board, Notice
+from messaging import send_push
 
 
 def get_notices_data(url):
@@ -84,4 +85,6 @@ def get_notice():
         board.update_latest(latest_num)
 
 
-get_notice()
+if __name__ == '__main__':
+    # get_notice()
+    send_push()
