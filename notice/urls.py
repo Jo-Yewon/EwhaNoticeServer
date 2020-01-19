@@ -1,11 +1,9 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import NoticeView
+from .views import NoticeList
 
-notice = NoticeView.as_view({
-    'get': 'list',
-})
+urlpatterns = [
+    path('notices/<int:board_id>/', NoticeList.as_view())
+]
 
-urlpatterns = format_suffix_patterns([
-    path('<int:board_id>/', notice, name='notice'),
-])
+urlpatterns = format_suffix_patterns(urlpatterns)
