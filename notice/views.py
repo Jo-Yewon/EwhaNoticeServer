@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .serializers import NoticeSerializer
+from .models import Notice
 
-# Create your views here.
+
+class NoticeView(viewsets.ModelViewSet):
+    lookup_field = 'board_id'
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
+
