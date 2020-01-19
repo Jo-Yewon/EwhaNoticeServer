@@ -12,6 +12,8 @@ def send_push():
         new_notices = Notice.objects.filter(board_category=i, push=False)
         if len(new_notices) == 0:
             continue
+        elif len(new_notices) > 50:
+            new_notices = new_notices[:50]
 
         data = {}
         for j in range(len(new_notices)):
@@ -23,7 +25,7 @@ def send_push():
             topic=topic
         )
 
-        response = messaging.send(message)
-        print(response)
+        messaging.send(message)
+
         for notice in new_notices:
             notice.set_push()

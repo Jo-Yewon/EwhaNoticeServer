@@ -16,12 +16,11 @@ from messaging import send_push
 def get_notices_data(url):
     req = requests.get(url)
     req.encoding = 'utf-8'
-    html = req.text
-    soup = BeautifulSoup(html, 'html.parser')
-    return soup.select('tbody > tr')
+    return BeautifulSoup(req.text, 'html.parser').select('tbody > tr')
 
 
 def get_first_notice(notices):
+    # Find the first numbered notice.
     for i in range(len(notices)):
         notice = notices[i]
         td_list = notice.find_all("td")
@@ -61,6 +60,8 @@ def get_notice():
             for notice in notices[latest_index:]:
                 td_list = notice.find_all("td")
                 num = int(td_list[0].string)
+                if num <= board.saved_latest:
+                    break
                 Notice(board_category=board.board_category,
                        board_id=board.board_id,
                        num=num,
@@ -73,6 +74,8 @@ def get_notice():
             for notice in notices[latest_index:]:
                 td_list = notice.find_all("td")
                 num = int(td_list[0].string)
+                if num <= board.saved_latest:
+                    break
                 Notice(board_category=board.board_category,
                        board_id=board.board_id,
                        num=num,
