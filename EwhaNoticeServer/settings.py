@@ -3,9 +3,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# TODO 키 분리, 디버그 모드, 호스트
 SECRET_KEY = 'n65_za9_)ifg^(=mqesqhk9bsihwxenle6753ix5qxl_8@c&it'
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = []
 
 
