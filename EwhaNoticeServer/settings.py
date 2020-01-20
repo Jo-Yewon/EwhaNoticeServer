@@ -3,9 +3,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'n65_za9_)ifg^(=mqesqhk9bsihwxenle6753ix5qxl_8@c&it'
+SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['15.165.76.40']
 
 
 # Application definition
