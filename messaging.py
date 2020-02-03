@@ -12,8 +12,8 @@ def send_push():
         new_notices = Notice.objects.filter(board_category=i, push=False)
         if len(new_notices) == 0:
             continue
-        elif len(new_notices) > 50:
-            new_notices = new_notices[:50]
+        elif len(new_notices) > 30:
+            new_notices = new_notices[:30]
 
         data = {}
         for j in range(len(new_notices)):
