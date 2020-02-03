@@ -21,7 +21,7 @@ class Board(models.Model):
     board_id = models.IntegerField(null=False)
     board_type = models.IntegerField(choices=BOARD_TYPE_CHOICE)
     base_url = models.CharField(max_length=300, null=False)
-    next_url = models.CharField(max_length=300, null=False)
+    next_url = models.CharField(max_length=300, blank=True)
     title = models.CharField(max_length=20, null=False)
     saved_latest = models.IntegerField(default=0)
 
