@@ -4,7 +4,7 @@ from notice.models import Board, Notice
 
 
 def send_push():
-    cred = credentials.Certificate("./ewhanotice-firebase-adminsdk-sgf5x-dd0dcd357b.json")
+    cred = credentials.Certificate("./ewhanotice-firebase-adminsdk-sgf5x-af7b9be4d2.json")
     firebase_admin.initialize_app(cred)
 
     for i in range(len(Board.BOARD_CATEGORY_CHOICE)):
