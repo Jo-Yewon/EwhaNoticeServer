@@ -7,5 +7,5 @@ db.sqlite3
 /static
 .DS_Store
 setting.py
-.json
+*.json
 migrations
