@@ -10,12 +10,13 @@ class Board(models.Model):
     ]
 
     # Board Type
-    COMMON, CATEGORY, NON_CATEGORY, NON_CATEGORY_NON_WRITER = range(4)
+    COMMON, CATEGORY, NON_CATEGORY, NON_CATEGORY_NON_WRITER, COMPLEX = range(5)
     BOARD_TYPE_CHOICE = [
         (COMMON, "Common"),
         (CATEGORY, "Category"),
         (NON_CATEGORY, "Non-Category"),
-        (NON_CATEGORY_NON_WRITER, "Non-Category&Non-Writer")
+        (NON_CATEGORY_NON_WRITER, "Non-Category&Non-Writer"),
+        (COMPLEX, "Complex")
     ]
 
     board_category = models.IntegerField(choices=BOARD_CATEGORY_CHOICE)

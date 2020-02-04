@@ -14,12 +14,6 @@ from notice.models import Board, Notice
 from messaging import send_push
 
 
-def get_notices_data(url):
-    req = requests.get(url)
-    req.encoding = 'utf-8'
-    return BeautifulSoup(req.text, 'html.parser').select('tbody > tr')
-
-
 def get_first_notice(notices):
     # Find the first numbered notice.
     for i in range(len(notices)):
@@ -35,14 +29,15 @@ def get_notice():
     boards = Board.objects.all()
     for board in boards:
         try:
-            # 1. get data from url
-            notices = get_notices_data(board.base_url + board.next_url)
-            latest_index, latest_num = get_first_notice(notices)
-            if latest_index == -1 or latest_num <= board.saved_latest:
-                continue
-
-            # 2. save new notices
             if board.board_type == Board.COMMON:
+                req = requests.get(board.base_url + board.next_url)
+                req.encoding = 'utf-8'
+                notices = BeautifulSoup(req.text, 'html.parser').select('tbody > tr')[1:]
+
+                latest_index, latest_num = get_first_notice(notices)
+                if latest_index == -1 or latest_num <= board.saved_latest:
+                    continue
+
                 for notice in notices[latest_index:]:
                     td_list = notice.find_all("td")
                     category = td_list[1].string.strip()
@@ -59,6 +54,14 @@ def get_notice():
                                url=board.base_url + td_list[2].a.attrs['href']).save()
 
             elif board.board_type == Board.CATEGORY:
+                req = requests.get(board.base_url + board.next_url)
+                req.encoding = 'utf-8'
+                notices = BeautifulSoup(req.text, 'html.parser').select('tbody > tr')[1:]
+
+                latest_index, latest_num = get_first_notice(notices)
+                if latest_index == -1 or latest_num <= board.saved_latest:
+                    continue
+
                 for notice in notices[latest_index:]:
                     td_list = notice.find_all("td")
                     num = int(td_list[0].string)
@@ -73,6 +76,14 @@ def get_notice():
                            url=board.base_url + td_list[2].a.attrs['href']).save()
 
             elif board.board_type == Board.NON_CATEGORY:
+                req = requests.get(board.base_url + board.next_url)
+                req.encoding = 'utf-8'
+                notices = BeautifulSoup(req.text, 'html.parser').select('table > tr')[1:]
+
+                latest_index, latest_num = get_first_notice(notices)
+                if latest_index == -1 or latest_num <= board.saved_latest:
+                    continue
+
                 for notice in notices[latest_index:]:
                     td_list = notice.find_all("td")
                     num = int(td_list[0].string)
@@ -87,6 +98,14 @@ def get_notice():
                            url=board.base_url + td_list[1].a.attrs['href']).save()
 
             elif board.board_type == Board.NON_CATEGORY_NON_WRITER:
+                req = requests.get(board.base_url + board.next_url)
+                req.encoding = 'utf-8'
+                notices = BeautifulSoup(req.text, 'html.parser').select('tbody > tr')[1:]
+
+                latest_index, latest_num = get_first_notice(notices)
+                if latest_index == -1 or latest_num <= board.saved_latest:
+                    continue
+
                 for notice in notices[latest_index:]:
                     td_list = notice.find_all("td")
                     num = int(td_list[0].string)
@@ -100,10 +119,35 @@ def get_notice():
                            date=td_list[2].text.strip(),
                            url=board.base_url + td_list[1].a.attrs['href']).save()
 
+            elif board.board_type == Board.COMPLEX:
+                req = requests.get(board.base_url + board.next_url)
+                req.encoding = 'utf-8'
+                notices_num = BeautifulSoup(req.text, 'html.parser').select('td.no_list')
+                notices_title = BeautifulSoup(req.text, 'html.parser').select('td.title_list')
+                notices_date = BeautifulSoup(req.text, 'html.parser').select('td.date_list')
+
+                for i in range(len(notices_num)):
+                    if notices_num[i].text != '':
+                        latest_index, latest_num = i, int(notices_num[i].text)
+                        break
+
+                for i in range(latest_index, len(notices_num)):
+                    num = int(notices_num[i].text)
+                    if num <= board.saved_latest:
+                        break
+                    Notice(board_category=board.board_category,
+                           board_id=board.board_id,
+                           num=num,
+                           title=notices_title[i].text.strip(),
+                           category=None,
+                           date=notices_date[i].text.strip(),
+                           url=board.base_url + notices_title[i].a.attrs['href']).save()
+
             # 3. update latest
             board.update_latest(latest_num)
+
         except:
-            print(board.title+"을 크롤링하는 중에 에러 발생")
+            print("Error occurred in crawling", board.id)
 
 
 if __name__ == '__main__':
