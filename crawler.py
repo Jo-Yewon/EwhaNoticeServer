@@ -86,6 +86,20 @@ def get_notice():
                            date=td_list[3].text.strip(),
                            url=board.base_url + td_list[1].a.attrs['href']).save()
 
+            elif board.board_type == Board.NON_CATEGORY_NON_WRITER:
+                for notice in notices[latest_index:]:
+                    td_list = notice.find_all("td")
+                    num = int(td_list[0].string)
+                    if num <= board.saved_latest:
+                        break
+                    Notice(board_category=board.board_category,
+                           board_id=board.board_id,
+                           num=num,
+                           title=td_list[1].a.text.strip(),
+                           category=None,
+                           date=td_list[2].text.strip(),
+                           url=board.base_url + td_list[1].a.attrs['href']).save()
+
             # 3. update latest
             board.update_latest(latest_num)
         except:
