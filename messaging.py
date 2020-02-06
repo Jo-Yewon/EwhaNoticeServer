@@ -9,6 +9,9 @@ def send_push():
 
     for i in range(len(Board.BOARD_CATEGORY_CHOICE)):
         topic = Board.BOARD_CATEGORY_CHOICE[i][1]
+        if topic == "Common":
+            continue
+
         new_notices = Notice.objects.filter(board_category=i, push=False)
         if len(new_notices) == 0:
             continue
