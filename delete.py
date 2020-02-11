@@ -11,7 +11,9 @@ from notice.models import Notice
 
 
 def delete_outdated_notice():
-    Notice.objects.filter(date__lte=datetime.now() - timedelta(days=60)).delete()
+    notices = Notice.objects.filter(date__lte=datetime.now() - timedelta(days=60))
+    print("Delete {} notices.".format(len(notices)))
+    notices.delete()
 
 
 if __name__ == '__main__':
