@@ -3,10 +3,26 @@ from django.db import models
 
 class Board(models.Model):
     # Board Category
-    COMMON, ELTEC = range(2)
+    COMMON, ELTEC, LIBERAL, APPLE, NATURE, MUSIC, ARTNDESIGN, TEACHERS, \
+    BIZ, CONVERGENCE, MED, NURSING, PHARM, SCRANTON, HOKMA, OTHER = range(16)
+
     BOARD_CATEGORY_CHOICE = [
         (COMMON, "Common"),
         (ELTEC, "Eltec"),
+        (LIBERAL, "Liberal"),
+        (APPLE, "Apple"),
+        (NATURE, "Nature"),
+        (MUSIC, "Music"),
+        (ARTNDESIGN, "Artndesign"),
+        (TEACHERS, "Teachers"),
+        (BIZ, "Biz"),
+        (CONVERGENCE, "Convergence"),
+        (MED, "Med"),
+        (NURSING, "Nursing"),
+        (PHARM, "Pharm"),
+        (SCRANTON, "Scranton"),
+        (HOKMA, "Hokma"),
+        (OTHER, "Other")
     ]
 
     # Board Type
