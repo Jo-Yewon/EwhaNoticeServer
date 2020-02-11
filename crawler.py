@@ -36,7 +36,7 @@ def get_notice():
             if board.board_type == Board.CATEGORY:
                 req = requests.get(board.base_url + board.next_url)
                 req.encoding = 'utf-8'
-                notices = BeautifulSoup(req.text, 'html.parser').select('tbody > tr')[1:]
+                notices = BeautifulSoup(req.text, 'html.parser').select('tbody tr')[1:]
                 if len(notices) == 0:
                     error(board, "cannot crawl")
 
@@ -60,7 +60,7 @@ def get_notice():
             elif board.board_type == Board.NON_CATEGORY:
                 req = requests.get(board.base_url + board.next_url)
                 req.encoding = 'utf-8'
-                notices = BeautifulSoup(req.text, 'html.parser').select('table > tr')[1:]
+                notices = BeautifulSoup(req.text, 'html.parser').select('table tr')[1:]
                 if len(notices) == 0:
                     error(board, "cannot crawl")
 
@@ -84,7 +84,7 @@ def get_notice():
             elif board.board_type == Board.NON_CATEGORY_NON_WRITER:
                 req = requests.get(board.base_url + board.next_url)
                 req.encoding = 'utf-8'
-                notices = BeautifulSoup(req.text, 'html.parser').select('tbody > tr')[1:]
+                notices = BeautifulSoup(req.text, 'html.parser').select('tbody tr')[1:]
                 if len(notices) == 0:
                     error(board, "cannot crawl")
 
