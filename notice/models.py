@@ -56,7 +56,7 @@ class Notice(models.Model):
     board_id = models.IntegerField()
     num = models.IntegerField()
     title = models.CharField(max_length=100)
-    category = models.CharField(max_length=5, null=True)
+    category = models.CharField(max_length=5, null=True, blank=True)
     date = models.DateField(auto_now_add=False)
     url = models.CharField(max_length=300)
     push = models.BooleanField(default=False)
