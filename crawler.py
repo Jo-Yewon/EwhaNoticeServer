@@ -12,6 +12,11 @@ django.setup()
 
 from notice.models import Board, Notice
 from messaging import send_push
+from slacker import Slacker
+from secret_util import get_secret
+import time
+
+channel = '#server_log'
 
 
 def get_first_notice(notices):
@@ -25,12 +30,22 @@ def get_first_notice(notices):
     return -1, -1
 
 
-def error(board, message):
-    print("board id: {}, board title: {}, {}.".format(board.board_id, board.title, message))
+def error(board, message, slack):
+    msg = "board id: {}, board title: {}, {}.".format(board.board_id, board.title, message)
+    print(msg)
+    send_msg_to_slack(msg, slack)
 
 
-def get_notice():
+def send_msg_to_slack(msg, slack):
+    try:
+        slack.chat.post_message(channel, msg)
+    except:
+        print("error to send slack")
+
+
+def get_notice(slack):
     boards = Board.objects.all()
+
     for board in boards:
         try:
             if board.board_type == Board.CATEGORY:
@@ -38,7 +53,7 @@ def get_notice():
                 req.encoding = 'utf-8'
                 notices = BeautifulSoup(req.text, 'html.parser').select('tbody tr')[1:]
                 if len(notices) == 0:
-                    error(board, "cannot crawl")
+                    error(board, "cannot crawl", slack)
 
                 latest_index, latest_num = get_first_notice(notices)
                 if latest_index == -1 or latest_num <= board.saved_latest:
@@ -62,7 +77,7 @@ def get_notice():
                 req.encoding = 'utf-8'
                 notices = BeautifulSoup(req.text, 'html.parser').select('table tr')[1:]
                 if len(notices) == 0:
-                    error(board, "cannot crawl")
+                    error(board, "cannot crawl", slack)
 
                 latest_index, latest_num = get_first_notice(notices)
                 if latest_index == -1 or latest_num <= board.saved_latest:
@@ -86,7 +101,7 @@ def get_notice():
                 req.encoding = 'utf-8'
                 notices = BeautifulSoup(req.text, 'html.parser').select('tbody tr')[1:]
                 if len(notices) == 0:
-                    error(board, "cannot crawl")
+                    error(board, "cannot crawl", slack)
 
                 latest_index, latest_num = get_first_notice(notices)
                 if latest_index == -1 or latest_num <= board.saved_latest:
@@ -112,7 +127,7 @@ def get_notice():
                 notices_title = BeautifulSoup(req.text, 'html.parser').select('td.title_list')
                 notices_date = BeautifulSoup(req.text, 'html.parser').select('td.date_list')
                 if len(notices_num) == 0:
-                    error(board, "cannot crawl")
+                    error(board, "cannot crawl", slack)
 
                 for i in range(len(notices_num)):
                     if notices_num[i].text != '':
@@ -135,9 +150,13 @@ def get_notice():
             board.update_latest(latest_num)
 
         except:
-            print("Error occurred in crawling", board.id)
+            msg = "Error occurred in crawling(board_id:{}, title:{})".format(board.id, board.title)
+            print(msg)
+            send_msg_to_slack(msg, slack)
 
 
 if __name__ == '__main__':
-    get_notice()
+    slack = Slacker(get_secret("SLACK_TOKEN"))
+    get_notice(slack)
     send_push()
+    send_msg_to_slack("notice_cron {}".format(time.localtime()), slack)
