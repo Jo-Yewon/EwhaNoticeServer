@@ -14,7 +14,7 @@ from notice.models import Board, Notice
 from messaging import send_push
 from slacker import Slacker
 from secret_util import get_secret
-import time
+import datetime
 
 channel = '#server_log'
 
@@ -159,4 +159,4 @@ if __name__ == '__main__':
     slack = Slacker(get_secret("SLACK_TOKEN"))
     get_notice(slack)
     send_push()
-    send_msg_to_slack("notice_cron {}".format(time.localtime()), slack)
+    send_msg_to_slack("Execute notice_cron.py {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), slack)
