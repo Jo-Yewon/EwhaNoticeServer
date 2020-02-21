@@ -4,7 +4,7 @@ from django.db import models
 class Board(models.Model):
     # Board Category
     COMMON, ELTEC, LIBERAL, APPLE, NATURE, MUSIC, ARTNDESIGN, TEACHERS, \
-    BIZ, CONVERGENCE, MED, NURSING, PHARM, SCRANTON, HOKMA, OTHER = range(16)
+    BIZ, CONVERGENCE, MED, NURSING, PHARM, SCRANTON, HOKMA, OTHER, TEST = range(17)
 
     BOARD_CATEGORY_CHOICE = [
         (COMMON, "Common"),
@@ -22,7 +22,8 @@ class Board(models.Model):
         (PHARM, "Pharm"),
         (SCRANTON, "Scranton"),
         (HOKMA, "Hokma"),
-        (OTHER, "Other")
+        (OTHER, "Other"),
+        (TEST, "Test")
     ]
 
     # Board Type
