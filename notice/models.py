@@ -51,6 +51,10 @@ class Board(models.Model):
         self.saved_latest = new_latest
         self.save()
 
+    def init(self):
+        self.saved_latest = 0
+        self.save()
+
 
 class Notice(models.Model):
     board_category = models.IntegerField(choices=Board.BOARD_CATEGORY_CHOICE, db_index=True)
