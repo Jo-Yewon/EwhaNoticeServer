@@ -5,8 +5,8 @@ from secret_util import get_secret
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = get_secret("SECRET_KEY")
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS = ['15.165.76.40']
 
 # Application definition
 INSTALLED_APPS = [
