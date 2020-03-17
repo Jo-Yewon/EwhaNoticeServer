@@ -7,12 +7,15 @@ import django
 
 django.setup()
 
-from notice.models import Notice
+from crawler import *
 
 
 def delete_outdated_notice():
     notices = Notice.objects.filter(date__lte=datetime.now() - timedelta(days=60))
-    print("Delete {} notices.".format(len(notices)))
+
+    slack = Slacker(get_secret("SLACK_TOKEN"))
+    send_msg_to_slack("Delete {} notices.".format(len(notices)), slack)
+
     notices.delete()
 
 
