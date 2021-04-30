@@ -33,4 +33,4 @@ slacker==0.14.0
 soupsieve==1.9.5
 sqlparse==0.3.0
 uritemplate==3.0.1
-urllib3==1.25.7
+urllib3==1.25.8
